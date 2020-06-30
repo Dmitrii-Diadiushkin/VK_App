@@ -10,7 +10,7 @@
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="VK_App_SB" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LoginViewController" customModule="VK_App" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -26,7 +26,7 @@
                                         </constraints>
                                     </imageView>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your login" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9k3-OS-cpH">
-                                        <rect key="frame" x="107" y="265" width="200" height="35"/>
+                                        <rect key="frame" x="107" y="240" width="200" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="LQs-t7-ubg"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="Y4T-tF-N8w"/>
@@ -35,7 +35,7 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter your password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="I3A-65-3Op">
-                                        <rect key="frame" x="107" y="320" width="200" height="35"/>
+                                        <rect key="frame" x="107" y="315" width="200" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="3gM-FK-tly"/>
                                             <constraint firstAttribute="height" constant="35" id="KgQ-hK-vN5"/>
@@ -44,7 +44,7 @@
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P7w-gn-pJT">
-                                        <rect key="frame" x="107" y="405" width="200" height="40"/>
+                                        <rect key="frame" x="107" y="400" width="200" height="40"/>
                                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="3Lf-ga-xEu"/>
@@ -58,9 +58,9 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="I3A-65-3Op" firstAttribute="top" secondItem="9k3-OS-cpH" secondAttribute="bottom" constant="20" id="62U-Qr-KTW"/>
+                                    <constraint firstItem="I3A-65-3Op" firstAttribute="top" secondItem="9k3-OS-cpH" secondAttribute="bottom" constant="40" id="62U-Qr-KTW"/>
                                     <constraint firstAttribute="bottom" secondItem="P7w-gn-pJT" secondAttribute="bottom" constant="20" id="D4E-vo-l6P"/>
-                                    <constraint firstItem="9k3-OS-cpH" firstAttribute="top" secondItem="TdY-20-4x0" secondAttribute="bottom" constant="75" id="KIW-1u-uzs"/>
+                                    <constraint firstItem="9k3-OS-cpH" firstAttribute="top" secondItem="TdY-20-4x0" secondAttribute="bottom" constant="50" id="KIW-1u-uzs"/>
                                     <constraint firstItem="P7w-gn-pJT" firstAttribute="centerX" secondItem="ZBQ-Bn-fN8" secondAttribute="centerX" id="O9s-RH-sfN"/>
                                     <constraint firstItem="P7w-gn-pJT" firstAttribute="top" secondItem="I3A-65-3Op" secondAttribute="bottom" constant="50" id="OdO-ze-Ndr"/>
                                     <constraint firstAttribute="trailing" secondItem="TdY-20-4x0" secondAttribute="trailing" constant="76" id="Sld-BG-ik5"/>

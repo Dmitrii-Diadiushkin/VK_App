@@ -14,20 +14,16 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordText: UITextField!
     @IBOutlet weak var loginScrollView: UIScrollView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        //Connect notifications
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         //Add tap gesture for hide keyboard
         let hideKeboardGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-        loginScrollView?.addGestureRecognizer(hideKeboardGesture)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        //Connect notifications
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWasShown), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillBeHidden), name: UIResponder.keyboardWillHideNotification, object: nil)
+        loginScrollView.addGestureRecognizer(hideKeboardGesture)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -44,8 +40,8 @@ class LoginViewController: UIViewController {
         let kbSize = (info.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue).cgRectValue.size
         let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
         
-        self.loginScrollView?.contentInset = contentInsets
-        loginScrollView?.scrollIndicatorInsets = contentInsets
+        self.loginScrollView.contentInset = contentInsets
+        loginScrollView.scrollIndicatorInsets = contentInsets
     }
     
     //Set scrollView size without keyboard
@@ -57,7 +53,7 @@ class LoginViewController: UIViewController {
     
     //Hiding keyboard
     @objc func hideKeyboard() {
-        self.loginScrollView?.endEditing(true)
+        self.loginScrollView.endEditing(true)
     }
 
 }
