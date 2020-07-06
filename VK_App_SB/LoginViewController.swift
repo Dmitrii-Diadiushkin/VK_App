@@ -24,6 +24,7 @@ class LoginViewController: UIViewController {
         //Add tap gesture for hide keyboard
         let hideKeboardGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         loginScrollView.addGestureRecognizer(hideKeboardGesture)
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
