@@ -56,5 +56,36 @@ class LoginViewController: UIViewController {
     @objc func hideKeyboard() {
         self.loginScrollView.endEditing(true)
     }
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if identifier == "loginSegue"{
+            let checkResult = checkUserData()
+            
+            if !checkResult {
+                showLoginError()
+            }
+            return checkResult
+        } else { return false }
+    }
+    
+    func checkUserData() -> Bool {
+        guard let login = loginText.text, let password = passwordText.text else {
+            return false
+        }
+        
+        if login == "admin" && password == "12345" {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func showLoginError() {
+        let alert = UIAlertController(title: "Login Error", message: "Wrong login and/or password", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+        
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
 
 }
