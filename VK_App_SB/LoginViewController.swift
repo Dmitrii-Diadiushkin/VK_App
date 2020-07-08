@@ -74,7 +74,7 @@ class LoginViewController: UIViewController {
             return false
         }
         
-        if login == "admin" && password == "12345" {
+        if login == "" && password == "" {
             return true
         } else {
             return false
