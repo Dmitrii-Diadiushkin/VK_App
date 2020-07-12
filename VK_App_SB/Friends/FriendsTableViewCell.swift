@@ -10,7 +10,7 @@ import UIKit
 
 class FriendsTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var friendAvatar: UIImageView!
+    @IBOutlet weak var friendAvatarView: ShadowView!
     @IBOutlet weak var friendName: UILabel!
     
     override func awakeFromNib() {
