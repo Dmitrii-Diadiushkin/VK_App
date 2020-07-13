@@ -41,7 +41,9 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
         // Configure the cell
         
         cell.friendPhoto.image = friends[selectedFriend].friendFoto[indexPath.row].fotoName
-        
+        cell.photoCounter = indexPath.row
+        cell.friendIndex = selectedFriend
+        cell.setUpLikeControl()
     
         return cell
     }
