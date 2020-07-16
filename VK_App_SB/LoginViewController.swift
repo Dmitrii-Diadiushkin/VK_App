@@ -57,6 +57,7 @@ class LoginViewController: UIViewController {
         self.loginScrollView.endEditing(true)
     }
     
+    //App login
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "loginSegue"{
             let checkResult = checkUserData()
@@ -73,7 +74,7 @@ class LoginViewController: UIViewController {
             return false
         }
         
-        if login == "admin" && password == "12345" {
+        if login == "" && password == "" {
             return true
         } else {
             return false
