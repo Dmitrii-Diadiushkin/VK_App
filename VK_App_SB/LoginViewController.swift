@@ -75,6 +75,9 @@ class LoginViewController: UIViewController {
         }
         
         if login == "" && password == "" {
+            friends.sort {
+                $0.friendName < $1.friendName
+            }
             return true
         } else {
             return false
