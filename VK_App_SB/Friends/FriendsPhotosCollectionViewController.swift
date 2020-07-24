@@ -32,7 +32,7 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return friends[selectedFriend].friendFoto.count
+        return filteredFriends[selectedFriend].friendFoto.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -40,12 +40,11 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     
         // Configure the cell
         
-        cell.friendPhoto.image = friends[selectedFriend].friendFoto[indexPath.row].fotoName
+        cell.friendPhoto.image = filteredFriends[selectedFriend].friendFoto[indexPath.row].fotoName
         cell.photoCounter = indexPath.row
         cell.friendIndex = selectedFriend
         cell.setUpLikeControl()
     
         return cell
     }
-
 }

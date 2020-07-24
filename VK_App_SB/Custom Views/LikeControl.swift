@@ -9,6 +9,7 @@
 import UIKit
 
 class LikeControl: UIControl {
+    
     var likeImage = UIImageView()
     var likeCounter = UILabel()
     var indexLike: Int = 0
@@ -39,33 +40,33 @@ class LikeControl: UIControl {
         NSLayoutConstraint(item: likeCounter, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1, constant: 5).isActive = true
         NSLayoutConstraint(item: likeCounter, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal, toItem: likeImage, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1, constant: 1).isActive = true
         NSLayoutConstraint(item: likeCounter, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: likeImage, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0).isActive = true
-
+        
         likeCounter.font = likeCounter.font.withSize(10)
         
-        if friends[indexLike].friendFoto[photoCounter].fotoLiked {
+        if filteredFriends[indexLike].friendFoto[photoCounter].fotoLiked {
             likeImage.image = UIImage(systemName: "heart.fill")
             likeCounter.textColor = .red
         }else{
             likeImage.image = UIImage(systemName: "heart")
         }
-        likeCounter.text = String(friends[indexLike].friendFoto[photoCounter].fotoLikes)
+        likeCounter.text = String(filteredFriends[indexLike].friendFoto[photoCounter].fotoLikes)
         
     }
 
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         
-        if friends[self.indexLike].friendFoto[self.photoCounter].fotoLiked {
+        if filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLiked {
             self.likeImage.image = UIImage(systemName: "heart")
-            friends[self.indexLike].friendFoto[self.photoCounter].fotoLikes -= 1
-            friends[self.indexLike].friendFoto[self.photoCounter].fotoLiked = false
-            self.likeCounter.text = String(friends[self.indexLike].friendFoto[self.photoCounter].fotoLikes)
+            filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLikes -= 1
+            filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLiked = false
+            self.likeCounter.text = String(filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLikes)
             likeCounter.textColor = .black
             
         }else{
             self.likeImage.image = UIImage(systemName: "heart.fill")
-            friends[self.indexLike].friendFoto[self.photoCounter].fotoLikes += 1
-            friends[self.indexLike].friendFoto[self.photoCounter].fotoLiked = true
-            self.likeCounter.text = String(friends[self.indexLike].friendFoto[self.photoCounter].fotoLikes)
+            filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLikes += 1
+            filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLiked = true
+            self.likeCounter.text = String(filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLikes)
             likeCounter.textColor = .red
         }
         return false
