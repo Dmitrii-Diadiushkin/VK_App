@@ -34,13 +34,13 @@ class FriendsTableViewController: UITableViewController {
         
     }
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return friendsIndex.count
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return friendsIndex
     }
+    
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return friendsIndex[section]
