@@ -41,6 +41,11 @@ class MyGroupsTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            for index in 0..<allGroups.count{
+                if allGroups[index].groupName == myGroups[indexPath.row].groupName {
+                    allGroups[index].groupSigned = false
+                }
+            }
             myGroups.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
@@ -53,6 +58,7 @@ class MyGroupsTableViewController: UITableViewController {
             if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
                 let group = allGroups[indexPath.row]
                 if !myGroups.contains(group) {
+                    allGroups[indexPath.row].groupSigned = true
                     myGroups.append(group)
                     tableView.reloadData()
                 }

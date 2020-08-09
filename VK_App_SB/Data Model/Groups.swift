@@ -21,4 +21,4 @@ groupData(groupName: "South Park", groupAvatar: UIImage(named: "sp")!, groupSign
 groupData(groupName: "Rick and Morty", groupAvatar: UIImage(named: "RnM")!, groupSigned: false),
 groupData(groupName: "Harley Quinn", groupAvatar: UIImage(named: "HQ")!, groupSigned: true)]
 
-var myGroups = [groupData]()
+var myGroups: [groupData] = [groupData(groupName: "Harley Quinn", groupAvatar: UIImage(named: "HQ")!, groupSigned: true)]

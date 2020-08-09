@@ -33,6 +33,8 @@ class AllGroupsTableViewController: UITableViewController {
         cell.groupAvatar.image = allGroups[indexPath.row].groupAvatar
         cell.groupName.text = allGroups[indexPath.row].groupName
         
+        cell.setUpView(signed: allGroups[indexPath.row].groupSigned)
+        
         if allGroups[indexPath.row].groupSigned {
             cell.groupSignMark.text = "Signed"
         }
