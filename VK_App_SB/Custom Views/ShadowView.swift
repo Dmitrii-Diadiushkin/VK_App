@@ -52,4 +52,15 @@ class ShadowView: UIView {
         self.layer.shadowOffset = CGSize.zero
         self.addSubview(avatarImage)
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        })
+    }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        UIView.animate(withDuration: 0.3, delay: 0.2, usingSpringWithDamping: 0.3, initialSpringVelocity: 0.1, animations: {
+            self.transform = CGAffineTransform(scaleX: 1, y: 1)
+        })
+    }
 }

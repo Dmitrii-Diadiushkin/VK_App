@@ -6,6 +6,7 @@
 //  Copyright © 2020 Dmitrii Diadiushkin. All rights reserved.
 //
 
+
 import UIKit
 
 class FriendsPhotosCollectionViewController: UICollectionViewController {
