@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6D1693A424BCC30600C5DD3A /* LikeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D1693A324BCC30600C5DD3A /* LikeControl.swift */; };
+		6D39737424E53BEA00BC1B5D /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D39737324E53BEA00BC1B5D /* Session.swift */; };
 		6D89AB2324CB3513008C871D /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D89AB2224CB3513008C871D /* News.swift */; };
 		6D89AB2524CB3554008C871D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D89AB2424CB3554008C871D /* Assets.xcassets */; };
 		6D89AB2824CB4E5E008C871D /* NewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D89AB2724CB4E5E008C871D /* NewsTableViewController.swift */; };
@@ -33,6 +34,7 @@
 
 /* Begin PBXFileReference section */
 		6D1693A324BCC30600C5DD3A /* LikeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeControl.swift; sourceTree = "<group>"; };
+		6D39737324E53BEA00BC1B5D /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		6D89AB2224CB3513008C871D /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		6D89AB2424CB3554008C871D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6D89AB2724CB4E5E008C871D /* NewsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewController.swift; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				6DD5434A24B62EF600072465 /* Friends.swift */,
 				6D9203D524B8526100CAB6F1 /* Groups.swift */,
 				6D89AB2224CB3513008C871D /* News.swift */,
+				6D39737324E53BEA00BC1B5D /* Session.swift */,
 			);
 			path = "Data Model";
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 				6D89AB2C24CB527C008C871D /* NewsTableViewCell.swift in Sources */,
 				6DAC71AA24BB8A4A00F6D871 /* ShadowView.swift in Sources */,
 				6D1693A424BCC30600C5DD3A /* LikeControl.swift in Sources */,
+				6D39737424E53BEA00BC1B5D /* Session.swift in Sources */,
 				6DD5434B24B62EF600072465 /* Friends.swift in Sources */,
 				6DE5520624B88AE6005A2C66 /* AllGroupsTableViewController.swift in Sources */,
 				6DE5520824B88B3E005A2C66 /* AllGroupsTableViewCell.swift in Sources */,
