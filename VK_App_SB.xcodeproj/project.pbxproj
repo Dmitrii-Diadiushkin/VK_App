@@ -97,7 +97,6 @@
 			children = (
 				6DA3B987249F739000CAB729 /* VK_App_SB */,
 				6DA3B986249F739000CAB729 /* Products */,
-				6D89AB2424CB3554008C871D /* Assets.xcassets */,
 			);
 			sourceTree = "<group>";
 		};
@@ -123,6 +122,7 @@
 				6DA3B98E249F739000CAB729 /* Main.storyboard */,
 				6DA3B993249F739000CAB729 /* LaunchScreen.storyboard */,
 				6DA3B996249F739000CAB729 /* Info.plist */,
+				6D89AB2424CB3554008C871D /* Assets.xcassets */,
 			);
 			path = VK_App_SB;
 			sourceTree = "<group>";
