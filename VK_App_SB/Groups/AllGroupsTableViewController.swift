@@ -10,9 +10,12 @@ import UIKit
 
 class AllGroupsTableViewController: UITableViewController {
 
+    let networkManager = NetworkManager.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.tableFooterView = UIView()
+        networkManager.getSearchedGroups(token: Session.shared.token, search: "NHL")
     }
 
     // MARK: - Table view data source
