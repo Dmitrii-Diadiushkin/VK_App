@@ -12,6 +12,7 @@ import UIKit
 class FriendsPhotosCollectionViewController: UICollectionViewController {
     
     var selectedFriend: Int = 0
+    let networkManager = NetworkManager.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,7 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
         
+        networkManager.getPhotos(token: Session.shared.token)
     }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {

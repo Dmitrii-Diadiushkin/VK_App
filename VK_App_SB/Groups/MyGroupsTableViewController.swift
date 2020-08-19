@@ -10,9 +10,13 @@ import UIKit
 
 class MyGroupsTableViewController: UITableViewController {
 
+    let networkManager = NetworkManager.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.tableFooterView = UIView()
+        
+        networkManager.getUserGroups(token: Session.shared.token)
 
     }
 

@@ -11,12 +11,15 @@ import UIKit
 class FriendsTableViewController: UITableViewController {
     
     var friendsIndex = [String]()
+    let networkManager = NetworkManager.shared
     
     @IBOutlet weak var searchFriendBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.tableFooterView = UIView()
+        
+        networkManager.getFriendList(token: Session.shared.token)
         
         searchFriendBar.delegate = self
         
@@ -99,7 +102,6 @@ extension FriendsTableViewController: UISearchBarDelegate{
         }
         
         friendsIndex = [String]()
-        
         for index in filteredFriends {
             if !friendsIndex.contains(String(index.friendName.first!)){
                 friendsIndex.append(String(index.friendName.first!))
