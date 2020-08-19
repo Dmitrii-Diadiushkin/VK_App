@@ -43,13 +43,13 @@ class LikeControl: UIControl {
         
         likeCounter.font = likeCounter.font.withSize(10)
         
-        if filteredFriends[indexLike].friendFoto[photoCounter].fotoLiked {
-            likeImage.image = UIImage(systemName: "heart.fill")
-            likeCounter.textColor = .red
-        }else{
-            likeImage.image = UIImage(systemName: "heart")
-        }
-        likeCounter.text = String(filteredFriends[indexLike].friendFoto[photoCounter].fotoLikes)
+//        if filteredFriends[indexLike].friendFoto[photoCounter].fotoLiked {
+//            likeImage.image = UIImage(systemName: "heart.fill")
+//            likeCounter.textColor = .red
+//        }else{
+//            likeImage.image = UIImage(systemName: "heart")
+//        }
+//        likeCounter.text = String(filteredFriends[indexLike].friendFoto[photoCounter].fotoLikes)
         
     }
 

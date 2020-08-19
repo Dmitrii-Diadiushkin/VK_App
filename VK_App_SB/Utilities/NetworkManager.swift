@@ -22,39 +22,53 @@ class NetworkManager {
     
     private let baseURL = "https://api.vk.com"
     private let version = "5.92"
+    private let userID = Session.shared.userId
     
-    func getFriendList(token: String){
+    func getFriendList(token: String, completion: ((Swift.Result<[Item], Error>) -> Void)? = nil) {
+        
         let path = "/method/friends.get"
         let parameters: Parameters = [
             "access_token": token,
             "order": "name",
-            "fields": "name",
+            "fields": "name, photo_100",
             "v": version
             
         ]
-        NetworkManager.session.request(baseURL + path, method: .get, parameters: parameters).responseJSON{ response in
+        NetworkManager.session.request(baseURL + path, method: .get, parameters: parameters).responseData{ response in
             guard let json = response.value else { return }
-            
-            print(json)
+            do {
+                let friends = try JSONDecoder().decode(Friends.self, from: json)
+                completion?(.success(friends.response.items))
+            } catch {
+                print(error.localizedDescription)
+                completion?(.failure(error))
+            }
         }
         
     }
     
-    func getPhotos(token: String){
+    func getPhotos(token: String, owner_id: String, completion: ((Swift.Result<[ItemPhoto], Error>) -> Void)? = nil) {
         let path = "/method/photos.getAll"
         let parameters: Parameters = [
             "access_token": token,
+            "owner_id": owner_id,
+            "extended": "1",
             "v": version
             
         ]
-        NetworkManager.session.request(baseURL + path, method: .get, parameters: parameters).responseJSON{ response in
+        NetworkManager.session.request(baseURL + path, method: .get, parameters: parameters).responseData{ response in
             guard let json = response.value else { return }
-            
-            print(json)
+            do {
+                let photos = try JSONDecoder().decode(Photos.self, from: json)
+                completion?(.success(photos.response.items))
+            } catch {
+                print(error.localizedDescription)
+                completion?(.failure(error))
+            }
         }
     }
     
-    func getUserGroups(token: String){
+    func getUserGroups(token: String, completion: ((Swift.Result<[ItemGroup], Error>) -> Void)? = nil){
         let path = "/method/groups.get"
         let parameters: Parameters = [
             "access_token": token,
@@ -62,10 +76,14 @@ class NetworkManager {
             "v": version
             
         ]
-        NetworkManager.session.request(baseURL + path, method: .get, parameters: parameters).responseJSON{ response in
+        NetworkManager.session.request(baseURL + path, method: .get, parameters: parameters).responseData { response in
             guard let json = response.value else { return }
-            
-            print(json)
+            do {
+                let groups = try JSONDecoder().decode(Groups.self, from: json)
+                completion?(.success(groups.response.items))
+            } catch {
+                completion?(.failure(error))
+            }
         }
     }
     
