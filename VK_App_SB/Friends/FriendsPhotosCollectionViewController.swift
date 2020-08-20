@@ -11,8 +11,9 @@ import UIKit
 
 class FriendsPhotosCollectionViewController: UICollectionViewController {
     
-    var selectedFriend: Int = 0
+    var selectedUserID = String()
     let networkManager = NetworkManager.shared
+    var userPhotos = [String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +26,23 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
         
-        networkManager.getPhotos(token: Session.shared.token)
+        networkManager.getPhotos(token: Session.shared.token, owner_id: selectedUserID) { [weak self] result in
+            
+            switch result {
+            case let .success(photos):
+                for photo in photos{
+                    for size in photo.sizes{
+                        if size.type == "x"{
+                            self?.userPhotos.append(size.url)
+                        }
+                    }
+                }
+                self?.collectionView.reloadData()
+                print(self!.userPhotos.count)
+            case let .failure(error):
+                print(error)
+            }
+        }
     }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -35,18 +52,20 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return filteredFriends[selectedFriend].friendFoto.count
+        return userPhotos.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "friendPhotosCell", for: indexPath) as! FriendPhotosCollectionViewCell
     
         // Configure the cell
-        
-        cell.friendPhoto.image = filteredFriends[selectedFriend].friendFoto[indexPath.row].fotoName
-        cell.photoCounter = indexPath.row
-        cell.friendIndex = selectedFriend
-        cell.setUpLikeControl()
+        guard let url = URL(string: userPhotos[indexPath.row]),
+        let data = try? Data(contentsOf: url) else { return cell}
+        cell.friendPhoto.image = UIImage(data: data)
+//        cell.friendPhoto.image = filteredFriends[selectedFriend].friendFoto[indexPath.row].fotoName
+//        cell.photoCounter = indexPath.row
+//        cell.friendIndex = selectedFriend
+//        cell.setUpLikeControl()
     
         return cell
     }

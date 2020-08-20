@@ -62,6 +62,7 @@ extension VKLoginViewController: WKNavigationDelegate {
                 return
         }
         Session.shared.token = token
+        Session.shared.userId = Int(userIdString)!
         
 //        let targetVC = (storyboard?.instantiateViewController(identifier: "TabBar"))!
 //        targetVC.modalPresentationStyle = .fullScreen

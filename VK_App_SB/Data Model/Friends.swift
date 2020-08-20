@@ -2,27 +2,44 @@
 //  Friends.swift
 //  VK_App_SB
 //
-//  Created by Dmitrii Diadiushkin on 08.07.2020.
+//  Created by Dmitrii Diadiushkin on 19.08.2020.
 //  Copyright © 2020 Dmitrii Diadiushkin. All rights reserved.
 //
+//   let friends = try? newJSONDecoder().decode(Friends.self, from: jsonData)
 
-import UIKit
+import Foundation
 
-struct friendsData: Equatable {
-    var friendName: String
-    var friendFoto: [friendFoto]
+// MARK: - Friends
+struct Friends: Codable {
+    let response: Response
 }
 
-struct friendFoto:Equatable {
-    var fotoName: UIImage
-    var fotoLiked: Bool
-    var fotoLikes: Int
+// MARK: - Response
+struct Response: Codable {
+    let count: Int
+    let items: [Item]
 }
 
-var friends: [friendsData] = [friendsData(friendName: "Harley Quinn",friendFoto: [friendFoto(fotoName: UIImage(named: "HQF0")!, fotoLiked: false, fotoLikes: 1),friendFoto(fotoName: UIImage(named: "HQF1")!, fotoLiked: false, fotoLikes: 1),friendFoto(fotoName: UIImage(named: "HQF2")!, fotoLiked: false, fotoLikes: 1),friendFoto(fotoName: UIImage(named: "HQF3")!, fotoLiked: false, fotoLikes: 5)]),
-friendsData(friendName: "Kenny McCormick", friendFoto: [friendFoto(fotoName: UIImage(named: "KMcKF0")!, fotoLiked: true, fotoLikes: 2),friendFoto(fotoName: UIImage(named: "KMcKF1")!, fotoLiked: true, fotoLikes: 2),friendFoto(fotoName: UIImage(named: "KMcKF2")!, fotoLiked: true, fotoLikes: 2),friendFoto(fotoName: UIImage(named: "KMcKF3")!, fotoLiked: true, fotoLikes: 4)]),
-friendsData(friendName: "Lisa Simpson", friendFoto: [friendFoto(fotoName: UIImage(named: "LSF0")!, fotoLiked: false, fotoLikes: 3),friendFoto(fotoName: UIImage(named: "LSF1")!, fotoLiked: false, fotoLikes: 3),friendFoto(fotoName: UIImage(named: "LSF2")!, fotoLiked: false, fotoLikes: 3),friendFoto(fotoName: UIImage(named: "LSF3")!, fotoLiked: false, fotoLikes: 8)]),
-friendsData(friendName: "Poison Ivy", friendFoto: [friendFoto(fotoName: UIImage(named: "PIF0")!, fotoLiked: true, fotoLikes: 4),friendFoto(fotoName: UIImage(named: "PIF1")!, fotoLiked: true, fotoLikes: 4),friendFoto(fotoName: UIImage(named: "PIF2")!, fotoLiked: true, fotoLikes: 4),friendFoto(fotoName: UIImage(named: "PIF3")!, fotoLiked: true, fotoLikes: 2)]),
-friendsData(friendName: "Lumpy", friendFoto: [friendFoto(fotoName: UIImage(named: "LF0")!, fotoLiked: false, fotoLikes: 5),friendFoto(fotoName: UIImage(named: "LF1")!, fotoLiked: false, fotoLikes: 5),friendFoto(fotoName: UIImage(named: "LF2")!, fotoLiked: false, fotoLikes: 5),friendFoto(fotoName: UIImage(named: "LF3")!, fotoLiked: false, fotoLikes: 1)])]
+// MARK: - Item
+struct Item: Codable {
+    let id: Int
+    let firstName, lastName: String
+    let isClosed, canAccessClosed: Bool
+    let photo100: String
+    let online: Int
+    let trackCode: String
 
-var filteredFriends: [friendsData] = []
+    enum CodingKeys: String, CodingKey {
+        case id
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case isClosed = "is_closed"
+        case canAccessClosed = "can_access_closed"
+        case photo100 = "photo_100"
+        case online
+        case trackCode = "track_code"
+    }
+}
+
+var friendsVK = [Item]()
+var friendsToShow = [Item]()
