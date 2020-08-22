@@ -11,6 +11,8 @@ import UIKit
 class FriendsTableViewController: UITableViewController {
     
     var friendsIndex = [String]()
+    var friendsVK = [Item]()
+    var friendsToShow = [Item]()
     let networkManager = NetworkManager.shared
     
     @IBOutlet weak var searchFriendBar: UISearchBar!
@@ -20,14 +22,14 @@ class FriendsTableViewController: UITableViewController {
         
         friendsIndex = [""]
 
-        networkManager.getFriendList(token: Session.shared.token) { result in
+        networkManager.getFriendList(token: Session.shared.token) { [weak self] result in
             
             switch result {
             case let .success(friends):
-                friendsVK = friends
-                friendsToShow = friendsVK
-                self.prepareSectionIndexes()
-                self.tableView.reloadData()
+                self?.friendsVK = friends
+                self?.friendsToShow = self!.friendsVK
+                self?.prepareSectionIndexes()
+                self?.tableView.reloadData()
             case let .failure(error):
                 print(error)
             }

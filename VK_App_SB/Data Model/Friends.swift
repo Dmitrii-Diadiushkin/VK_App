@@ -8,26 +8,29 @@
 //   let friends = try? newJSONDecoder().decode(Friends.self, from: jsonData)
 
 import Foundation
+import RealmSwift
 
 // MARK: - Friends
-struct Friends: Codable {
+class Friends: Codable {
     let response: Response
 }
 
 // MARK: - Response
-struct Response: Codable {
+class Response: Codable {
     let count: Int
     let items: [Item]
 }
 
 // MARK: - Item
-struct Item: Codable {
-    let id: Int
-    let firstName, lastName: String
-    let isClosed, canAccessClosed: Bool
-    let photo100: String
-    let online: Int
-    let trackCode: String
+class Item: Object, Codable {
+    @objc dynamic var id: Int = 0
+    @objc dynamic var firstName: String = ""
+    @objc dynamic var lastName: String = ""
+    @objc dynamic var isClosed: Bool = true
+    @objc dynamic var canAccessClosed: Bool = true
+    @objc dynamic var photo100: String = ""
+    @objc dynamic var online: Int = 0
+    @objc dynamic var trackCode: String = ""
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -40,6 +43,3 @@ struct Item: Codable {
         case trackCode = "track_code"
     }
 }
-
-var friendsVK = [Item]()
-var friendsToShow = [Item]()

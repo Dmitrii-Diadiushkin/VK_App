@@ -31,14 +31,10 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
             switch result {
             case let .success(photos):
                 for photo in photos{
-                    for size in photo.sizes{
-                        if size.type == "x"{
-                            self?.userPhotos.append(size.url)
-                        }
-                    }
+                    guard let photoURL = photo.photoSizes["x"] else { continue }
+                    self?.userPhotos.append(photoURL)
                 }
                 self?.collectionView.reloadData()
-                print(self!.userPhotos.count)
             case let .failure(error):
                 print(error)
             }

@@ -9,58 +9,57 @@
 //   let photos = try? newJSONDecoder().decode(Photos.self, from: jsonData)
 
 import Foundation
+import RealmSwift
 
-// MARK: - Photos
-struct Photos: Codable {
+class Photos: Decodable {
     let response: ResponsePhoto
 }
 
-// MARK: - Response
-struct ResponsePhoto: Codable {
+class ResponsePhoto: Decodable {
     let count: Int
-    let items: [ItemPhoto]
+    let items: [PhotoItem]
 }
 
-// MARK: - Item
-struct ItemPhoto: Codable {
-    let albumID, date, id, ownerID: Int
-    let hasTags: Bool
-    let postID: Int?
-    let sizes: [Size]
-    let text: String
-    let likes: Likes
-    let reposts: Reposts
-
-    enum CodingKeys: String, CodingKey {
-        case albumID = "album_id"
-        case date, id
-        case ownerID = "owner_id"
-        case hasTags = "has_tags"
-        case postID = "post_id"
-        case sizes, text, likes, reposts
-    }
+class PhotoItem: Object, Decodable {
+    @objc dynamic var id: Int = 0
+    @objc dynamic var ownerID: Int = 0
+    var photoSizes: [String : String] = [:]
+    @objc dynamic var likes: Int = 0
+    @objc dynamic var liked: Int = 0
     
-}
-
-// MARK: - Likes
-struct Likes: Codable {
-    let userLikes, count: Int
-
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey{
+        case id
+        case ownerID = "owner_id"
+        case sizes
+        case likes
+    }
+    enum PhotoSizesCodingKeys: String, CodingKey{
+        case height, url, type, width
+    }
+    enum LikesCodingKeys: String, CodingKey{
         case userLikes = "user_likes"
         case count
     }
-}
-
-// MARK: - Reposts
-struct Reposts: Codable {
-    let count: Int
-}
-
-// MARK: - Size
-struct Size: Codable {
-    let height: Int
-    let url: String
-    let type: String
-    let width: Int
+    
+    convenience required init(from decoder: Decoder) throws {
+        self.init()
+        
+        let value = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try value.decode(Int.self, forKey: .id)
+        self.ownerID = try value.decode(Int.self, forKey: .ownerID)
+        
+        var photoSizeData = try value.nestedUnkeyedContainer(forKey: .sizes)
+        
+        while !photoSizeData.isAtEnd {
+            let photo = try photoSizeData.nestedContainer(keyedBy: PhotoSizesCodingKeys.self)
+            let photoType = try photo.decode(String.self, forKey: .type)
+            let photoUrl = try photo.decode(String.self, forKey: .url)
+            
+            photoSizes[photoType] = photoUrl
+        }
+        
+        let likesData = try value.nestedContainer(keyedBy: LikesCodingKeys.self, forKey: .likes)
+        liked = try likesData.decode(Int.self, forKey: .userLikes)
+        likes = try likesData.decode(Int.self, forKey: .count)
+    }
 }
