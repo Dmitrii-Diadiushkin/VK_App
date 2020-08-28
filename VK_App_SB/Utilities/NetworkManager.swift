@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import RealmSwift
 
 class NetworkManager {
     
@@ -38,6 +39,7 @@ class NetworkManager {
             guard let json = response.value else { return }
             do {
                 let friends = try JSONDecoder().decode(Friends.self, from: json)
+                self.saveToRealm(friends.response.items)
                 completion?(.success(friends.response.items))
             } catch {
                 print(error.localizedDescription)
@@ -47,7 +49,7 @@ class NetworkManager {
         
     }
     
-    func getPhotos(token: String, owner_id: String, completion: ((Swift.Result<[ItemPhoto], Error>) -> Void)? = nil) {
+    func getPhotos(token: String, owner_id: String, completion: ((Swift.Result<[PhotoItem], Error>) -> Void)? = nil) {
         let path = "/method/photos.getAll"
         let parameters: Parameters = [
             "access_token": token,
@@ -60,6 +62,7 @@ class NetworkManager {
             guard let json = response.value else { return }
             do {
                 let photos = try JSONDecoder().decode(Photos.self, from: json)
+                self.saveToRealm(photos.response.items)
                 completion?(.success(photos.response.items))
             } catch {
                 print(error.localizedDescription)
@@ -80,6 +83,7 @@ class NetworkManager {
             guard let json = response.value else { return }
             do {
                 let groups = try JSONDecoder().decode(Groups.self, from: json)
+                self.saveToRealm(groups.response.items)
                 completion?(.success(groups.response.items))
             } catch {
                 completion?(.failure(error))
@@ -99,6 +103,17 @@ class NetworkManager {
             guard let json = response.value else { return }
             
             print(json)
+        }
+    }
+    
+    func saveToRealm<T: Object>(_ data: [T]) {
+        do {
+            let realm = try Realm()
+            realm.beginWrite()
+            realm.add(data)
+            try realm.commitWrite()
+        } catch {
+            print(error)
         }
     }
 }
