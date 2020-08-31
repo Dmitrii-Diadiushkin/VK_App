@@ -18,11 +18,11 @@ class Friends: Codable {
 // MARK: - Response
 class Response: Codable {
     let count: Int
-    let items: [Item]
+    let items: [Friend]
 }
 
 // MARK: - Item
-class Item: Object, Codable {
+class Friend: Object, Codable {
     @objc dynamic var id: Int = 0
     @objc dynamic var firstName: String = ""
     @objc dynamic var lastName: String = ""
@@ -41,5 +41,9 @@ class Item: Object, Codable {
         case photo100 = "photo_100"
         case online
         case trackCode = "track_code"
+    }
+    
+    override class func primaryKey() -> String? {
+        return "id"
     }
 }

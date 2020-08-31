@@ -8,12 +8,24 @@
 
 
 import UIKit
+import RealmSwift
+import SDWebImage
 
 class FriendsPhotosCollectionViewController: UICollectionViewController {
     
     var selectedUserID = String()
     let networkManager = NetworkManager.shared
+    let realmManager = RealmManager.shared
     var userPhotos = [String]()
+    
+    private lazy var reloadControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .systemBlue
+        refreshControl.attributedTitle = NSAttributedString(string: "Reload data...",
+                                                     attributes: [.font: UIFont.systemFont(ofSize: 10)])
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        return refreshControl
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,21 +38,38 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
         
+        collectionView.refreshControl = reloadControl
+        loadData()
+    }
+    
+    func loadData(completion: (() -> Void)? = nil) {
         networkManager.getPhotos(token: Session.shared.token, owner_id: selectedUserID) { [weak self] result in
             
             switch result {
             case let .success(photos):
                 for photo in photos{
-                    guard let photoURL = photo.photoSizes["x"] else { continue }
+                    var photoURL = ""
+                    for photoSize in photo.photoSizes{
+                        if photoSize.photoSize == "x" {
+                            photoURL = photoSize.photoURL
+                        }
+                    }
                     self?.userPhotos.append(photoURL)
                 }
                 self?.collectionView.reloadData()
+                completion?()
             case let .failure(error):
                 print(error)
             }
         }
     }
-
+    
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        loadData { [weak self] in
+            self?.collectionView.refreshControl?.endRefreshing()
+        }
+    }
+    
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -55,14 +84,9 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "friendPhotosCell", for: indexPath) as! FriendPhotosCollectionViewCell
     
         // Configure the cell
-        guard let url = URL(string: userPhotos[indexPath.row]),
-        let data = try? Data(contentsOf: url) else { return cell}
-        cell.friendPhoto.image = UIImage(data: data)
-//        cell.friendPhoto.image = filteredFriends[selectedFriend].friendFoto[indexPath.row].fotoName
-//        cell.photoCounter = indexPath.row
-//        cell.friendIndex = selectedFriend
-//        cell.setUpLikeControl()
-    
+        guard let url = URL(string: userPhotos[indexPath.row]) else { return cell}
+        cell.friendPhoto.sd_setImage(with: url, completed: nil)
+            
         return cell
     }
 }
