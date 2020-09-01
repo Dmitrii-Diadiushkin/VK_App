@@ -38,10 +38,31 @@ class FriendsTableViewController: UITableViewController {
         return refreshControl
     }()
     
+    private var friendsToShowNotificationToken: NotificationToken?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         loadData()
+        
+        friendsToShowNotificationToken = friendsToShow?.observe { [weak self] change in
+            switch change {
+            case .initial:
+                print("Initialized")
+            case let .update(results, deletions: deletions, insertions: insertions, modifications: modifications):
+                print("""
+                    New count: \(results.count)
+                    Deletions: \(deletions)
+                    Insertion: \(insertions)
+                    Modifications: \(modifications)
+                """)
+                self?.tableView.reloadData()
+                
+                case let .error(error):
+                    print(error.localizedDescription)
+            }
+            
+        }
         
         searchFriendBar.delegate = self
         
@@ -50,8 +71,11 @@ class FriendsTableViewController: UITableViewController {
         self.tableView.tableFooterView = UIView()
     }
     
+    deinit {
+        friendsToShowNotificationToken?.invalidate()
+    }
+    
     @objc private func refresh(_ sender: UIRefreshControl) {
-        try? realmManager?.deleteAll()
         loadData { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
@@ -65,7 +89,6 @@ class FriendsTableViewController: UITableViewController {
                 
                 DispatchQueue.main.async {
                     try? self?.realmManager?.add(objects: friends)
-                    self?.tableView.reloadData()
                     completion?()
                 }
                 

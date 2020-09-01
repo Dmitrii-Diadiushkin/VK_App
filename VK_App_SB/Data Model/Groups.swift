@@ -51,8 +51,3 @@ class ItemGroup: Object, Codable {
         return "id"
     }
 }
-
-//enum TypeEnum: String, Codable {
-//    case group = "group"
-//    case page = "page"
-//}

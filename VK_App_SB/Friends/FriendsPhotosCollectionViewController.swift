@@ -13,10 +13,11 @@ import SDWebImage
 
 class FriendsPhotosCollectionViewController: UICollectionViewController {
     
-    var selectedUserID = String()
+    var selectedUserID: String?
     let networkManager = NetworkManager.shared
     let realmManager = RealmManager.shared
     var userPhotos = [String]()
+  
     
     private lazy var reloadControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -43,15 +44,15 @@ class FriendsPhotosCollectionViewController: UICollectionViewController {
     }
     
     func loadData(completion: (() -> Void)? = nil) {
-        networkManager.getPhotos(token: Session.shared.token, owner_id: selectedUserID) { [weak self] result in
+        networkManager.getPhotos(token: Session.shared.token, owner_id: selectedUserID!) { [weak self] result in
             
             switch result {
             case let .success(photos):
                 for photo in photos{
                     var photoURL = ""
                     for photoSize in photo.photoSizes{
-                        if photoSize.photoSize == "x" {
-                            photoURL = photoSize.photoURL
+                        if photoSize.key == "x" {
+                            photoURL = photoSize.value
                         }
                     }
                     self?.userPhotos.append(photoURL)
