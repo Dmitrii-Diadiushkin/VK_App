@@ -55,22 +55,22 @@ class LikeControl: UIControl {
 
     override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         
-        UIView.transition(with: self, duration: 0.5, options: .transitionFlipFromTop, animations: {
-            if filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLiked {
-                self.likeImage.image = UIImage(systemName: "heart")
-                filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLikes -= 1
-                filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLiked = false
-                self.likeCounter.text = String(filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLikes)
-                self.likeCounter.textColor = .black
-                
-            }else{
-                self.likeImage.image = UIImage(systemName: "heart.fill")
-                filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLikes += 1
-                filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLiked = true
-                self.likeCounter.text = String(filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLikes)
-                self.likeCounter.textColor = .red
-            }
-        })
+//        UIView.transition(with: self, duration: 0.5, options: .transitionFlipFromTop, animations: {
+//            if filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLiked {
+//                self.likeImage.image = UIImage(systemName: "heart")
+//                filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLikes -= 1
+//                filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLiked = false
+//                self.likeCounter.text = String(filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLikes)
+//                self.likeCounter.textColor = .black
+//                
+//            }else{
+//                self.likeImage.image = UIImage(systemName: "heart.fill")
+//                filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLikes += 1
+//                filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLiked = true
+//                self.likeCounter.text = String(filteredFriends[self.indexLike].friendFoto[self.photoCounter].fotoLikes)
+//                self.likeCounter.textColor = .red
+//            }
+//        })
         return false
     }
     

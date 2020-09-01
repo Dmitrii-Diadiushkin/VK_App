@@ -7,45 +7,83 @@
 //
 
 import UIKit
+import RealmSwift
+import SDWebImage
 
 class FriendsTableViewController: UITableViewController {
     
-    var friendsIndex = [String]()
-    var friendsVK = [Item]()
-    var friendsToShow = [Item]()
     let networkManager = NetworkManager.shared
+    let realmManager = RealmManager.shared
     
     @IBOutlet weak var searchFriendBar: UISearchBar!
     
+    var friendsIndex = [String]()
+    
+    private var friendsVK: Results<Friend>? {
+        let friends: Results<Friend>? = realmManager?.getObjects()
+        return friends?.sorted(byKeyPath: "firstName", ascending: true)
+    }
+    
+    var friendsToShow: Results<Friend>? {
+        guard !searchFriendBar.text!.isEmpty else {return friendsVK}
+        return friendsVK?.filter(NSPredicate(format: "firstName CONTAINS[cd] %@", searchFriendBar.text!))
+    }
+    
+    private lazy var reloadControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.tintColor = .systemBlue
+        refreshControl.attributedTitle = NSAttributedString(string: "Reload data...",
+                                                     attributes: [.font: UIFont.systemFont(ofSize: 10)])
+        refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
+        return refreshControl
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        friendsIndex = [""]
 
+        loadData()
+        
+        searchFriendBar.delegate = self
+        
+        tableView.refreshControl = reloadControl
+        
+        self.tableView.tableFooterView = UIView()
+    }
+    
+    @objc private func refresh(_ sender: UIRefreshControl) {
+        try? realmManager?.deleteAll()
+        loadData { [weak self] in
+            self?.refreshControl?.endRefreshing()
+        }
+    }
+    
+    private func loadData(completion: (() -> Void)? = nil) {
         networkManager.getFriendList(token: Session.shared.token) { [weak self] result in
-            
+
             switch result {
             case let .success(friends):
-                self?.friendsVK = friends
-                self?.friendsToShow = self!.friendsVK
-                self?.prepareSectionIndexes()
-                self?.tableView.reloadData()
+                
+                DispatchQueue.main.async {
+                    try? self?.realmManager?.add(objects: friends)
+                    self?.tableView.reloadData()
+                    completion?()
+                }
+                
             case let .failure(error):
                 print(error)
             }
         }
-        
-        searchFriendBar.delegate = self
-        
-        self.tableView.tableFooterView = UIView()
     }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        if friendsIndex.count > 0 {
-            return friendsIndex.count
-        } else {
-            return 1
+
+        friendsIndex = [String]()
+        for index in friendsToShow! {
+            if !friendsIndex.contains(String(index.firstName.first!)){
+                friendsIndex.append(String(index.firstName.first!))
+            }
         }
-        
+        return friendsIndex.count
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
@@ -58,8 +96,8 @@ class FriendsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var friendRow = [Item]()
-        for friend in friendsToShow {
+        var friendRow = [Friend]()
+        for friend in friendsToShow! {
             if friendsIndex[section].contains(friend.firstName.first!) {
                 friendRow.append(friend)
             }
@@ -71,19 +109,17 @@ class FriendsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "friendCell", for: indexPath) as! FriendsTableViewCell
 
-        var friendRow = [Item]()
-        for friend in friendsToShow {
+        var friendRow = [Friend]()
+        for friend in friendsToShow! {
             if friendsIndex[indexPath.section].contains(friend.firstName.first!) {
                 friendRow.append(friend)
             }
         }
         
         cell.friendName.text = friendRow[indexPath.row].firstName + " " + friendRow[indexPath.row].lastName
-        guard let url = URL(string: friendRow[indexPath.row].photo100),
-        let data = try? Data(contentsOf: url) else { return cell}
+        guard let url = URL(string: friendRow[indexPath.row].photo100) else { return cell }
         
-        
-        cell.friendAvatarView.avatarImage.image = UIImage(data: data)
+        cell.friendAvatarView.avatarImage.sd_setImage(with: url, completed: nil)
     
         return cell
     }
@@ -98,44 +134,16 @@ class FriendsTableViewController: UITableViewController {
                     indexRowCounter += self.tableView.numberOfRows(inSection: index)
                 }
                 indexRowCounter += indexPath.row
-                let selectedUserID = String(friendsToShow[indexRowCounter].id)
+                let selectedUserID = String(friendsToShow![indexRowCounter].id)
                 friendPhotosView.selectedUserID = selectedUserID
             }
-        }
-    }
-    
-    func prepareSectionIndexes(){
-        for index in friendsVK {
-            if !friendsIndex.contains(String(index.firstName.first!)){
-                friendsIndex.append(String(index.firstName.first!))
-            }
-        }
-        
-        friendsToShow.sort {
-            $0.firstName < $1.firstName
         }
     }
 }
 
 extension FriendsTableViewController: UISearchBarDelegate{
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-        friendsToShow = searchText.isEmpty ? friendsVK : friendsVK.filter { (item: Item) -> Bool in
-            return item.firstName.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
-        }
-        
-        friendsIndex = [String]()
-        for index in friendsToShow {
-            if !friendsIndex.contains(String(index.firstName.first!)){
-                friendsIndex.append(String(index.firstName.first!))
-            }
-        }
-        
-        friendsToShow.sort {
-            $0.firstName < $1.firstName
-        }
-        
-        friendsIndex.sort()
+
         self.tableView.reloadData()
     }
 }
