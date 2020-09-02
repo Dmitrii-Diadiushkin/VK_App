@@ -29,8 +29,30 @@ class MyGroupsTableViewController: UITableViewController {
         return refreshControl
     }()
     
+    private var myGroupsNotificationToken: NotificationToken?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        myGroupsNotificationToken = myGroups?.observe { [weak self] change in
+            switch change {
+            case .initial:
+                print("Initialized")
+            case let .update(results, deletions: deletions, insertions: insertions, modifications: modifications):
+                print("""
+                    New count: \(results.count)
+                    Deletions: \(deletions)
+                    Insertion: \(insertions)
+                    Modifications: \(modifications)
+                """)
+                self?.tableView.reloadData()
+            case let .error(error):
+                print("\(error.localizedDescription)")
+            }
+            
+        }
+        
         self.tableView.tableFooterView = UIView()
         
         tableView.refreshControl = reloadControl
@@ -39,8 +61,11 @@ class MyGroupsTableViewController: UITableViewController {
 
     }
     
+    deinit {
+        myGroupsNotificationToken?.invalidate()
+    }
+    
     @objc private func refresh(_ sender: UIRefreshControl) {
-        try? realmManager?.deleteAll()
         loadData { [weak self] in
             self?.refreshControl?.endRefreshing()
         }
@@ -52,7 +77,6 @@ class MyGroupsTableViewController: UITableViewController {
             case let .success(myGroups):
                 DispatchQueue.main.async {
                     try? self?.realmManager?.add(objects: myGroups)
-                    self?.tableView.reloadData()
                     completion?()
                 }
             case let .failure(error):
@@ -85,32 +109,4 @@ class MyGroupsTableViewController: UITableViewController {
         
         return cell
     }
-    
-//    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        if editingStyle == .delete {
-//            for index in 0..<allGroups.count{
-//                if allGroups[index].groupName == myGroups[indexPath.row].groupName {
-//                    allGroups[index].groupSigned = false
-//                }
-//            }
-//            myGroups.remove(at: indexPath.row)
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-//        }
-//    }
-    
-    @IBAction func addGroup(segue: UIStoryboardSegue) {
-        if segue.identifier == "addGroup" {
-            guard let allGroupsController = segue.source as? AllGroupsTableViewController else {return}
-            
-//            if let indexPath = allGroupsController.tableView.indexPathForSelectedRow {
-//                let group = allGroups[indexPath.row]
-//                if !myGroups.contains(group) {
-//                    allGroups[indexPath.row].groupSigned = true
-//                    myGroups.append(group)
-//                    tableView.reloadData()
-//                }
-//            }
-        }
-    }
-
 }

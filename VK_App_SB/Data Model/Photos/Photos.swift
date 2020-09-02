@@ -62,4 +62,7 @@ class PhotoItem: Object, Decodable {
         liked = try likesData.decode(Int.self, forKey: .userLikes)
         likes = try likesData.decode(Int.self, forKey: .count)
     }
+    override class func primaryKey() -> String? {
+        "id"
+    }
 }
