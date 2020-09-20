@@ -110,6 +110,7 @@ class FriendsTableViewController: UITableViewController {
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        print(friendsToShow!)
         return friendsIndex
     }
     
