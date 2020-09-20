@@ -8,11 +8,15 @@
 
 import UIKit
 
-class NewsTableViewCell: UITableViewCell {
+class NewsPostTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var newsHeader: UILabel!
+    @IBOutlet weak var likeCounter: UILabel!
+    @IBOutlet weak var authorAvatar: UIImageView!
+    @IBOutlet weak var authorName: UILabel!
+    @IBOutlet weak var newsTitle: UILabel!
     @IBOutlet weak var newsText: UILabel!
-    @IBOutlet weak var fotoNews: UIImageView!
+    @IBOutlet weak var commentsCounter: UILabel!
+    @IBOutlet weak var repostCounter: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
