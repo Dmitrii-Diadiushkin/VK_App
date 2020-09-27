@@ -14,7 +14,8 @@ class NewsTableViewController: UITableViewController {
         super.viewDidLoad()
         self.tableView.tableFooterView = UIView()
         
-        self.tableView.register(UINib(nibName: "NewsTableViewCell", bundle: nil), forCellReuseIdentifier: "newsCell")
+        self.tableView.register(UINib(nibName: "NewsPostTableViewCell", bundle: nil), forCellReuseIdentifier: "newsCell")
+        self.tableView.register(UINib(nibName: "NewsPhotoTableViewCell", bundle: nil), forCellReuseIdentifier: "newsPhotoCell")
         
 
     }
@@ -29,12 +30,10 @@ class NewsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "newsCell", for: indexPath) as! NewsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "newsCell", for: indexPath) as! NewsPostTableViewCell
+        //let cell = tableView.dequeueReusableCell(withIdentifier: "newsPhotoCell", for: indexPath) as! NewsPhotoTableViewCell
 
         // Configure the cell...
-        cell.newsHeader.text = news[indexPath.row].newsHeader
-        cell.newsText.text = news[indexPath.row].news
-        cell.fotoNews.image = UIImage(named: news[indexPath.row].foto[0])
         return cell
     }
 
